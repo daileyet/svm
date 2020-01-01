@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}">Open Software Version Management</title>
+		<link rel="icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+    	<link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}">
+		<link href="../../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}">
+		<link href="../../static/simditor/simditor.css" rel="stylesheet" th:href="@{/simditor/simditor.css}">
+		<link href="../../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+		<!--[if lt IE 9]>
+		   <script src="../../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-file-text-o"></i>
+					<h2>模块 <small><i class="icon icon-pencil"></i></small></h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:object="${releaseInfo}" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent" >
+						<form method="POST" enctype="multipart/form-data" th:action="@{/release/save}" action="/release/save">
+							<div class="form-group row">
+								<div class="col-md-4">
+									<input type="hidden" class="form-control" id="id" name="id" th:value="*{id}" required>
+									<label for="type" class="required">类别</label>
+									<input type="text" class="form-control"  name="type" id="type" th:value="*{type}"  value="xxxxxx" readonly>
+								</div>
+								<div class="col-md-4">
+									<label for="releaseNum" class="required">版本号</label>
+									<input type="text" maxlength="50" name="releaseNum" id="releaseNum" class="form-control"  th:value="*{releaseNum}" placeholder="模块版本号" required>
+								</div>
+							</div>
+							<hr>
+							<div class="panel-group" id="accordionPanels" aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading" id="headingOne">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" data-parent="#accordionPanels" href="#collapseOne">
+												关联属性
+											</a>
+										</h4>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse in">
+										<div class="panel-body">
+											<button class="btn btn-info btn-sm" type="button" data-toggle="modal" data-target=".release-attr"><i class="icon icon-plus"></i>
+												新增</button>
+											<div class="attr-region " style="margin-top:5px">
+												<div class="attr-item " th:each="attr : ${releaseAttrs}">
+													<input type="hidden" name="attrP" th:value="${attr.itemName +'#'+ attr.itemValue }" />
+													<div class="form-group row ">
+														<div class="col-md-5">
+															<input type="text" maxlength="50" name="attrN" th:value="${attr.itemName}" class="form-control" placeholder="属性名" disabled>
+														</div>
+														<div class="col-md-5">
+															<input type="text" maxlength="100" name="attrV" th:value="${attr.itemValue}" class="form-control" placeholder="属性值" disabled>
+														</div>
+														<div class="col-md-2" style="margin-top:3px">
+															<button type="button" class="btn btn-danger btn-sm">删除</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group ">
+								<label for="content" >详情</label>
+								<textarea class="form-control " id="content" name="content" placeholder="模块详情" th:text="*{content}"></textarea>
+							</div>
+							<hr>
+							<button type="submit" class="btn btn-primary"><i class="icon icon-save"></i> 提交</button>
+							<a href="javascript:void(0);" class="btn btn-danger" data-toggle="modal" data-target="#delConfirm"><i class="icon icon-trash"></i> 删除</a>
+							<a th:href="@{/release}" class="btn"><i class="icon icon-reply"></i> 返回</a>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="delConfirm" >
+				<div class="modal-dialog modal-sm">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+							<h4 class="modal-title"><i class="icon icon-question-sign "></i> 确认</h4>
+						</div>
+						<div class="modal-body">
+							<p>您确定要删除 <strong><span class="label label-badge" th:text="*{releaseNum}"></span></strong> Release信息吗?</p>
+						</div>
+						<div class="modal-footer">
+							<a th:href="@{/release/del(id=${releaseInfo.id})}" class="btn btn-danger">确定</a>
+							<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade release-attr">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+						<h4 class="modal-title">新增关联属性</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group  ">
+							<label for="attrN" class="required">属性名</label>
+							<select name="attrN" id="attrN" class="form-control" required>
+								<optgroup th:each="entry: ${metaAttrMap}" th:label="${entry.key.display}">
+									<option th:each="attr : ${entry.value}" th:value="${attr.attrName}" th:text="${attr.attrDisplay}" ></option>
+								</optgroup>
+							</select>
+						</div>
+						<div class="form-group  ">
+							<label for="attrV" class="required">属性值</label>
+							<input type="text" maxlength="100" name="attrV" id="attrV" class="form-control" placeholder="属性值" required >
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" id="btnReleaseAttrAdd" class="btn btn-primary">确定</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="fragments :: footer"></footer>
+
+		<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+		<script src="../../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+		<!-- ZUI Javascript组件 -->
+		<script src="../../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+		<script src="../../static/simditor/module.js" th:src="@{/simditor/module.js}"></script>
+		<script src="../../static/simditor/hotkeys.js" th:src="@{/simditor/hotkeys.js}"></script>
+		<script src="../../static/simditor/simditor.js" th:src="@{/simditor/simditor.js}"></script>
+		<script type="text/javascript" src="../../static/js/base.js" th:src="@{/js/base.js}"></script>
+		<script type="text/javascript" src="../../static/js/release_a.js" th:src="@{/js/release_a.js}"></script>
+	</body>
+
+</html>

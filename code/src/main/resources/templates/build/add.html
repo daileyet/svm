@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}">Open Software Version Management</title>
+		<link rel="icon" href="../../static/favicon.png" th:href="@{/img/favicon.png}" type="image/x-icon" />
+    	<link rel="shortcut icon" href="../../static/favicon.png" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}"/>
+		<link href="../../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}"/>
+		<link href="../../static/lib/datetimepicker/datetimepicker.min.css" th:href="@{/lib/datetimepicker/datetimepicker.min.css}" rel="stylesheet"/>
+		<link href="../../static/simditor/simditor.css" rel="stylesheet" th:href="@{/simditor/simditor.css}" />
+		<link href="../../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}"/>
+		<!--[if lt IE 9]>
+		   <script src="../../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-file-text-o"></i>
+					<h2>主版本 <small><i class="icon icon-plus"></i></small></h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent">
+						<form method="POST" enctype="multipart/form-data" th:action="@{/build/create}" action="/build/create" th:object="${versionInfo}">
+							<div class="form-group ">
+									<label for="prj_id" class="required">项目缩写</label>
+									<select class="form-control" data-part="0" name="prj_id" id="prj_id" required 
+										th:data-link="@{/api/seq/next}" >
+										<option th:each="prj : ${prjInfos}" 
+										th:data-link="@{/api/project/{prj_id}/meta_rels(prj_id=${prj.id})}"
+										th:value="${prj.id}" th:text="${prj.shortName}" th:data-id="${prj.id}" 
+										th:selected="${prj.shortName == versionInfo.prj_short}">T4</option>
+									</select>
+							</div>
+							<hr>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label for="seq_number" class="required">流水号 <i class="seq-loading icon icon-spin icon-spinner " style="display:none"></i></label>
+									<div class="input-group">
+										<input type="number" data-part="1" name="seq_number" id="seq_number" class="form-control" min="1" max="255" th:value="*{seq_number}" placeholder="流水號（30~255）" required readonly>
+										<span class="input-group-addon" >&nbsp;&nbsp;</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<label for="release_date" class="required">发布日期</label>
+									<div class="input-group date form-date"  data-date-format="yymmdd" data-link-format="yymmdd" >
+										<input class="form-control" data-part="2" id="release_date" size="16" type="text" readonly  placeholder="Release 日期" th:value="*{release_date}" required />
+										<span class="input-group-addon"><span class="icon-remove"></span></span>
+										<span class="input-group-addon"><span class="icon-calendar"></span></span>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label for="seq_continus" class="required">流水模式 </label>
+									<div class="radio">
+									  <label class="radio-inline" title="创建成功后自动递增">
+										<input type="radio" name="seq_continus" value="true" checked> 持续递增
+									  </label>
+									  <label class="radio-inline" title="创建成功后保持不变">
+									  	<input type="radio" name="seq_continus" value="false"> 保持不变
+									  </label>
+									</div>
+									<p></p>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label for="prj" class="required">项目</label>
+									<select class="form-control" data-part="3" name="prj" id="prj" required 
+									th:data-link="@{/api/meta/prj/productline}" >
+										<option th:each="prj : ${metaProjects} " th:value="${prj.prjId}" th:text="${prj.prjName}" th:selected="(${prj.prjName} == *{prj_short})">T4</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label for="productline" class="required">产品线 <i class="productline-loading icon icon-spin icon-spinner " style="display:none"></i></label>
+									<select class="form-control" data-part="4" name="productline" id="productline" required >
+									</select>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group ">
+								<label for="build_no" class="required">总版本编号</label>
+								<input type="text" class="form-control" id="build_no" name="build_no" placeholder="最终版本编号" maxlength="16" value="" readonly>
+							</div>
+							<hr>
+							<div class="row" th:if="${not #lists.isEmpty(metaReleases)}">
+								<div th:each="metaRel : ${metaReleases}" >
+									<div class="form-group release-region col-md-6"  th:data-role="${metaRel.name}">
+										<label th:for="|map['${metaRel.name}'].id|" class="required" ><span th:text="|${metaRel.name} 版本号|">版本号</span> <i class="release-loading icon icon-spin icon-spinner " style="display:none"></label></i>
+										<!-- <input type="text"  maxlength="50" th:name="${rel.name}" th:id="${rel.name}" class="form-control"  th:placeholder="|${rel.name} Release 版本号|" required> -->
+										<select class="form-control" th:name="|map['${metaRel.name}'].id|" th:id="|map['${metaRel.name}'].id|" required >
+											<option value="" th:text="|请选择 ${metaRel.name} release number...|">请选择 release number...</option>
+											<option th:each="rel : ${allReleaseMap[metaRel.name]}" th:value="${rel.id}" th:text="${rel.releaseNum}"></option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<hr th:if="${not #lists.isEmpty(metaReleases)}">
+							<div class="form-group ">
+								<label for="desc" >备注</label>
+								<textarea class="form-control" id="desc" name="desc" maxlength="250" placeholder="主版本备注"></textarea>
+							</div>
+							<hr>
+							<button type="submit" class="btn btn-primary"><i class="icon icon-save"></i> 提交</button>
+							<a th:href="@{/build}" class="btn"><i class="icon icon-reply"></i> 返回</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="fragments :: footer"></footer>
+
+		<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+		<script src="../../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+		<!-- ZUI Javascript组件 -->
+		<script src="../../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+		<script src="../../static/lib/datetimepicker/datetimepicker.min.js" th:src="@{/lib/datetimepicker/datetimepicker.min.js}"></script>
+		<script src="../../static/simditor/module.js" th:src="@{/simditor/module.js}"></script>
+		<script src="../../static/simditor/hotkeys.js" th:src="@{/simditor/hotkeys.js}"></script>
+		<script src="../../static/simditor/simditor.js" th:src="@{/simditor/simditor.js}"></script>
+		<script type="text/javascript" src="../../static/js/base.js" th:src="@{/js/base.js}"></script>
+		<script type="text/javascript" src="../../static/js/build_a.js" th:src="@{/js/build_a.js}"></script>
+	</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}">Open Software Version Management</title>
+		<link rel="icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+    	<link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}">
+		<link href="../../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}">
+		<link href="../../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+		<link href="../../static/lib/datagrid/zui.datagrid.min.css" rel="stylesheet" th:href="@{/lib/datagrid/zui.datagrid.min.css}">
+		<link href="../../static/lib/datetimepicker/datetimepicker.min.css" rel="stylesheet" th:href="@{/lib/datetimepicker/datetimepicker.min.css}">
+		<!--[if lt IE 9]>
+		   <script src="../../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-file-text-o"></i>
+					<h2>自定义属性 <small><i class="icon icon-th-list"></i></small></h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent">
+						<div id="datagridLog" class="datagrid datagrid-borderless">
+							<header class="clearfix">
+								<div class="row">
+									<form class="form-inline col-md-10 with-padding">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="input-group">
+													<div class="input-control search-box search-box-circle has-icon-left has-icon-right search-example" id="searchboxLog">
+														<input id="inputSearchLog" type="search" class="form-control search-input" placeholder="Attribute Name">
+														<label for="inputSearchLog" class="input-control-icon-left search-icon"><i class="icon icon-search"></i></label>
+													</div>
+													<span class="input-group-btn">
+												    <button class="btn btn-primary" id="searchButton" type="button">搜索</button>
+												  </span>
+												</div>
+											</div>
+										</div>
+									</form>
+									<div class="col-md-2 with-padding " sec:authorize="hasRole('CONTRIBUTOR')">
+										<a th:href="@{/attr/add}" title="新增" class="btn btn-primary" type="button"><i class="icon icon-plus"></i> 新增</a>
+									</div>
+								</div>
+							</header>
+							<hr/>
+							<div class="datagrid-container"></div>
+							<div class="pager"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="_ROLE_" name="_ROLE_" sec:authorize="hasRole('CONTRIBUTOR')"/>
+		<footer th:replace="fragments :: footer"></footer>
+		
+		<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+		<script src="../../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+		<!-- ZUI Javascript组件 -->
+		<script src="../../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+
+		<script src="../../static/lib/datagrid/zui.datagrid.ext.js" th:src="@{/lib/datagrid/zui.datagrid.ext.js}"></script>
+
+		
+		<script type="text/javascript" src="../../static/js/base.js" th:src="@{/js/base.js}"></script>
+		<script type="text/javascript" src="../../static/js/attr.js" th:src="@{/js/attr.js}"></script>
+	</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}">Open Software Version Management</title>
+		<link rel="icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}">
+		<link href="../../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}">
+		<link href="../../static/simditor/simditor.css" rel="stylesheet" th:href="@{/simditor/simditor.css}">
+		<link href="../../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+		<!--[if lt IE 9]>
+		   <script src="../../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-file-text-o"></i>
+					<h2>产品线 <small><i class="icon icon-plus"></i></small></h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent">
+						<form method="POST" enctype="multipart/form-data" th:action="@{/productline/save}" action="/productline/save">
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label for="category" class="required">类别</label>
+									<select class="form-control" name="category" id="category" required>
+										<option value="CN">CN</option>
+									</select>
+								</div>
+								<div class="col-md-6">
+									<label for="prjId" class="required">Project</label>
+									<select class="form-control" name="prjId" id="prjId" required>
+										<option th:each="pj : ${metaInfos}" th:value="${pj.prjId}" th:text="${pj.prjName}">T4</option>
+									</select>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group row">
+								<div class="col-md-6">
+									<label for="clId" class="required">Productline ID</label>
+									<input type="text" maxlength="3" name="plId" id="plId" class="form-control"  placeholder="Productline ID: 01" required>
+								</div>
+								<div class="col-md-6">
+									<label for="clName" class="required">Productline Name</label>
+									<input type="text" maxlength="100" name="plName" id="plName" class="form-control"  placeholder="Productline Name" required>
+								</div>
+							</div>
+							<hr>
+							<div class="form-group ">
+								<label for="content">详情</label>
+								<textarea class="form-control " id="description" name="description" placeholder="Productline 详情"></textarea>
+							</div>
+							<hr>
+							<button type="submit" class="btn btn-primary"><i class="icon icon-save"></i> 提交</button>
+							<a th:href="@{/productline}" class="btn"><i class="icon icon-reply"></i> 返回</a>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="fragments :: footer"></footer>
+
+		<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+		<script src="../../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+		<!-- ZUI Javascript组件 -->
+		<script src="../../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+		<script type="text/javascript" src="../../static/js/base.js" th:src="@{/js/base.js}"></script>
+	</body>
+
+</html>

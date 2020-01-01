@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.openthinks.svm.core.mapper.BizMetaAttrMapper">
+  <resultMap id="BaseResultMap" type="com.openthinks.svm.core.model.BizMetaAttr">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="attr_name" jdbcType="VARCHAR" property="attrName" />
+    <result column="attr_display" jdbcType="VARCHAR" property="attrDisplay" />
+    <result column="attr_desc" jdbcType="VARCHAR" property="attrDesc" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, category, attr_name, attr_display, attr_desc
+  </sql>
+  <select id="selectByExample" parameterType="com.openthinks.svm.core.model.BizMetaAttrExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_meta_attrbuite
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from b_meta_attrbuite
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from b_meta_attrbuite
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.openthinks.svm.core.model.BizMetaAttrExample">
+    delete from b_meta_attrbuite
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.openthinks.svm.core.model.BizMetaAttr">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+      SELECT UUID_SHORT()
+    </selectKey>
+    insert into b_meta_attrbuite (id, category, attr_name, 
+      attr_display, attr_desc)
+    values (#{id,jdbcType=BIGINT}, #{category,jdbcType=VARCHAR}, #{attrName,jdbcType=VARCHAR}, 
+      #{attrDisplay,jdbcType=VARCHAR}, #{attrDesc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.openthinks.svm.core.model.BizMetaAttr">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Long">
+      SELECT UUID_SHORT()
+    </selectKey>
+    insert into b_meta_attrbuite
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
+      <if test="category != null">
+        category,
+      </if>
+      <if test="attrName != null">
+        attr_name,
+      </if>
+      <if test="attrDisplay != null">
+        attr_display,
+      </if>
+      <if test="attrDesc != null">
+        attr_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id,jdbcType=BIGINT},
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="attrName != null">
+        #{attrName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrDisplay != null">
+        #{attrDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="attrDesc != null">
+        #{attrDesc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.openthinks.svm.core.model.BizMetaAttrExample" resultType="java.lang.Long">
+    select count(*) from b_meta_attrbuite
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update b_meta_attrbuite
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.category != null">
+        category = #{record.category,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attrName != null">
+        attr_name = #{record.attrName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attrDisplay != null">
+        attr_display = #{record.attrDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.attrDesc != null">
+        attr_desc = #{record.attrDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update b_meta_attrbuite
+    set id = #{record.id,jdbcType=BIGINT},
+      category = #{record.category,jdbcType=VARCHAR},
+      attr_name = #{record.attrName,jdbcType=VARCHAR},
+      attr_display = #{record.attrDisplay,jdbcType=VARCHAR},
+      attr_desc = #{record.attrDesc,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.openthinks.svm.core.model.BizMetaAttr">
+    update b_meta_attrbuite
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="attrName != null">
+        attr_name = #{attrName,jdbcType=VARCHAR},
+      </if>
+      <if test="attrDisplay != null">
+        attr_display = #{attrDisplay,jdbcType=VARCHAR},
+      </if>
+      <if test="attrDesc != null">
+        attr_desc = #{attrDesc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.openthinks.svm.core.model.BizMetaAttr">
+    update b_meta_attrbuite
+    set category = #{category,jdbcType=VARCHAR},
+      attr_name = #{attrName,jdbcType=VARCHAR},
+      attr_display = #{attrDisplay,jdbcType=VARCHAR},
+      attr_desc = #{attrDesc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByExampleWithRowbounds" parameterType="com.openthinks.svm.core.model.BizMetaAttrExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_meta_attrbuite
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <!-- generated by SelectOneByExamplePlugin Fri Nov 15 09:21:35 CST 2019 -->
+  <select id="selectOneByExample" parameterType="com.openthinks.svm.core.model.BizMetaAttrExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from b_meta_attrbuite
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

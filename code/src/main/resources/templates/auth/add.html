@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}"></title>
+		<link rel="icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+    	<link rel="shortcut icon" href="../../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}">
+		<link href="../../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}">
+		<link href="../../static/lib/chosen/chosen.min.css" rel="stylesheet" th:href="@{/lib/chosen/chosen.min.css}">
+		<link href="../../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+		<!--[if lt IE 9]>
+		   <script src="../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-group"></i>
+					<h2>权限配置 <small><i class="icon icon-plus"></i></small></h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent">
+						<form method="POST" enctype="multipart/form-data" th:action="@{/auth/save}" action="/auth/save">
+							<div class="form-group">
+								<label for="userName" class="required">用户名称</label>
+								<input type="text" class="form-control" id="userName" name="userName" placeholder="用户名" maxlength="25" required />
+							</div>
+							<div class="form-group">
+								<label for="userName" class="required">用户密码</label>
+								<input type="password" class="form-control" id="userPass" name="userPass" placeholder="密码长度不少6位" maxlength="25" required>
+							</div>
+							<div class="form-group">
+								<input type="password" class="form-control" id="userPass2" name="userPass2" placeholder="再次输入密码" maxlength="25" required>
+							</div>
+							<div class="form-group">
+								<label for="roles" class="required">用户角色</label>
+								<select name="roles" id="roles" required data-placeholder="选择用户角色..." class="chosen-select form-control" tabindex="2" multiple="">
+									<option value="3">系统管理员</option>
+									<option value="2">版本配置员</option>
+									<option value="1">版本查看员</option>
+								</select>
+								<div class="help-block">
+									<span class="label">版本查看员</span>：<small>查看主版本信息，其他release信息；</small><br>
+									<span class="label">版本配置员</span>：<small>查看，创建，修改 主版本信息，其他release信息，流水信息，Carline信息；</small><br>
+									<span class="label">系统管理员</span>：<small>创建用户，分配用户角色；</small>
+								</div>
+							</div>
+							<div class="form-group">
+
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary">提交</button>
+								<a th:href="@{/auth}" class="btn">返回</a>
+							</div>
+							<input type="hidden" name="model" value="C" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer th:replace="fragments :: footer"></footer>
+
+		<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+		<script src="../../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+		<!-- ZUI Javascript组件 -->
+		<script src="../../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+		<script src="../../static/lib/chosen/chosen.min.js" th:src="@{/lib/chosen/chosen.min.js}"></script>
+		<script type="text/javascript" src="../../static/js/base.js" th:src="@{/js/base.js}"></script>
+		<script type="text/javascript" src="../../static/js/auth_a.js" th:src="@{/js/auth_a.js}"></script>
+	</body>
+
+</html>

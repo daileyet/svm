@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}">Open Software Version Management</title>
+		<link rel="icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<link rel="shortcut icon" href="../../static/favicon.ico" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}">
+		<link href="../../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}">
+		<link href="../../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+		<!--[if lt IE 9]>
+		   <script src="../../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-sort-by-order"></i>
+					<h2>流水号 <small><i class="icon icon-plus"></i></small></h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent">
+						<form method="POST" enctype="multipart/form-data" th:action="@{/seq/save}" action="/seq/save">
+							<div class="form-group">
+								<label for="prjId" class="required">项目缩写</label>
+								<select class="form-control" name="prjId" id="prjId" required>
+									<option th:each="prj : ${prjInfos}" th:value="${prj.id}" th:text="${prj.shortName}">T4</option>
+								</select>
+							</div>
+							<div class="form-group ">
+								<label for="next" class="required">流水号</label>
+								<input type="number" class="form-control" id="next" name="next" required>
+							</div>
+							<div class="form-group row">
+								<div class="col-md-4">
+									<label for="min">流水最小值</label>
+									<input type="number" class="form-control" id="min" name="min">
+								</div>
+								<div class="col-md-4">
+									<label for="max">流水最大值</label>
+									<input type="number" class="form-control" id="max" name="max">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="radio-inline">
+									<input type="radio" name="continus" value="true" checked> 持续递增
+								</label>
+								<label class="radio-inline">
+									<input type="radio" name="continus" value="false"> 保持不变
+								</label>
+							</div>
+							<button type="submit" class="btn btn-primary"><i class="icon icon-save"></i> 提交</button>
+							<a th:href="@{/seq}" class="btn"><i class="icon icon-reply"></i> 返回</a>
+						</form>
+					</div>
+				</div>
+			</div>
+
+
+			<footer th:replace="fragments :: footer"></footer>
+
+			<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+			<script src="../../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+			<!-- ZUI Javascript组件 -->
+			<script src="../../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+			<script type="text/javascript" src="../../static/js/base.js" th:src="@{/js/base.js}"></script>
+	</body>
+
+</html>

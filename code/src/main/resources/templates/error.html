@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8" />
+		<title th:text="${appTitle}"></title>
+		<link rel="icon" href="../static/img/favicon.png" th:href="@{/img/favicon.png}" type="image/x-icon" />
+    	<link rel="shortcut icon" href="../static/img/favicon.png" th:href="@{/img/favicon.png}" type="image/x-icon" />
+		<!-- zui -->
+		<link href="../static/css/zui.min.css" rel="stylesheet" th:href="@{/css/zui.min.css}">
+		<link href="../static/css/zui-theme.min.css" rel="stylesheet" th:href="@{/css/zui-theme.min.css}">
+		<link href="../static/css/style.css" rel="stylesheet" th:href="@{/css/style.css}">
+		<!--[if lt IE 9]>
+		   <script src="../static/lib/ieonly/html5shiv.js" th:src="@{/lib/ieonly/html5shiv.js}"></script>
+		   <script src="../static/lib/ieonly/respond.js" th:src="@{/lib/ieonly/respond.js}"></script>
+		   <script src="../static/lib/ieonly/excanvas.js" th:src="@{/lib/ieonly/excanvas.js}"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<header th:replace="fragments :: header"></header>
+
+		<div id="page">
+			<div id="pageHeader">
+				<div class="wrapper container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<i class="icon icon-bug"></i>
+					<h2>异常</h2>
+				</div>
+			</div>
+			<div id="pageBody">
+				<div class="container" th:class="${#bools.isTrue(isFluid) ?'container-fluid':'container'}">
+					<div id="pageContent">
+						<div class="page-header">
+						  <!--<h2>
+						  	<span class="label label-warning">操作异常 - 
+						  	<span th:text="${error.code}">404</span> </span>
+						  </h2>-->
+						  <h2>操作异常 - <span th:text="${error.code}">404</span></h2>
+						</div>
+				        <div class="alert alert-warning-inverse with-icon">
+							  <i class="icon-frown"></i>
+							  <div class="content"><p><strong>异常信息：</strong><span th:text="${error.details}">异常信息</span></p></div>
+						</div>
+				       <hr>
+				       <section class="text-right">
+				       		<!--<a href="#" th:href="@{/}" class="btn btn-primary"><i class="icon icon-home"></i> 首页</a>-->
+				       		<a href="javascript:goBack()" class="btn btn-default"><i class="icon icon-chevron-left"></i> 返回</a>
+				       </section>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<footer th:replace="fragments :: footer"></footer>
+
+		<!-- jQuery (ZUI中的Javascript组件依赖于jQuery) -->
+		<script src="../static/lib/jquery/jquery.js" th:src="@{/lib/jquery/jquery.js}"></script>
+		<!-- ZUI Javascript组件 -->
+		<script src="../static/js/zui.min.js" th:src="@{/js/zui.min.js}"></script>
+		<script type="text/javascript" src="../static/js/base.js" th:src="@{/js/base.js}"></script>
+	</body>
+
+</html>
