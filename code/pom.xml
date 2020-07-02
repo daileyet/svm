@@ -25,7 +25,7 @@
 		<java.version>1.8</java.version>
 		<generate.skip>true</generate.skip>
 		<springboot.debug>false</springboot.debug>
-		<mysql.connector.version>5.1.47</mysql.connector.version>
+		<mysql.connector.version>8.0.16</mysql.connector.version>
 		<mybatis.core.package>com.openthinks.svm.core</mybatis.core.package>
 		<mybatis.core.dir>com/openthinks/svm/core</mybatis.core.dir>
 		<mybatis.core.model.package>${mybatis.core.package}.model</mybatis.core.model.package>
